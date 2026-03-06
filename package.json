@@ -1,15 +1,33 @@
 {
   "name": "playwright-e2e-tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "Professional E2E testing with Playwright, TypeScript, and Page Object Model pattern. Includes UI and API testing examples with best practices.",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:chrome": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "page-object-model",
+    "typescript",
+    "api-testing",
+    "qa"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.10.0",
+    "dotenv": "^16.3.1",
     "typescript": "^5.9.3"
   }
 }

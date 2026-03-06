@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { TodoPage } from '../pages/TodoPage';
+import { test } from '@playwright/test';
+import { TodoPage } from '../../pages/TodoPage';
+import { TEST_DATA } from '../../utils/test-data';
 
-test.describe('TodoMVC Tests', () => {
+test.describe('TodoMVC - UI Tests', () => {
     let todoPage: TodoPage;
 
     test.beforeEach(async ({ page }) => {
@@ -9,7 +10,7 @@ test.describe('TodoMVC Tests', () => {
         await todoPage.navigateTo('/examples/react/dist/');
     });
 
-    test.only('should add, complete and filter todos', async () => {
+    test('should add, complete and filter todos', async () => {
         // Add todos
         await todoPage.addTodo('Buy milk');
         await todoPage.addTodo('Walk dog');
@@ -43,5 +44,37 @@ test.describe('TodoMVC Tests', () => {
         await todoPage.clearCompleted();
         await todoPage.verifyTodoCount(1);
         await todoPage.verifyTodoExists('Task 2');
+    });
+
+    test('should add multiple todos from test data', async () => {
+        // Add multiple todos using test data
+        for (const todo of TEST_DATA.TODOS) {
+            await todoPage.addTodo(todo.text);
+        }
+
+        // Verify all todos were added
+        await todoPage.verifyTodoCount(TEST_DATA.TODOS.length);
+
+        // Verify each todo exists
+        for (const todo of TEST_DATA.TODOS) {
+            await todoPage.verifyTodoExists(todo.text);
+        }
+    });
+
+    test('should edit existing todo', async () => {
+        await todoPage.addTodo('Original task');
+        await todoPage.editTodo(0, 'Updated task');
+        
+        await todoPage.verifyTodoExists('Updated task');
+    });
+
+    test('should delete todo', async () => {
+        await todoPage.addTodo('Task to delete');
+        await todoPage.addTodo('Task to keep');
+        
+        await todoPage.deleteTodo(0);
+        
+        await todoPage.verifyTodoCount(1);
+        await todoPage.verifyTodoExists('Task to keep');
     });
 });
